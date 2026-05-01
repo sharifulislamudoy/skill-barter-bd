@@ -23,8 +23,8 @@ const sidebarLinks = [
     icon: Users,
   },
   {
-    label: "Pending Skills",
-    href: "/admin/pending-skills",
+    label: "Skills Management",
+    href: "/admin/skills",
     icon: Clock,
   },
 ];

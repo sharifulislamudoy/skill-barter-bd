@@ -115,12 +115,12 @@ const Navbar = () => {
       case "skill_verifier":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: "/pending-skills", label: "Pending Skills", icon: ShieldCheck },
+          { href: "skill_verifier/skills", label: "Pending Skills", icon: ShieldCheck },
         ];
       case "admin":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: "/admin/pending-skills", label: "Pending Skills", icon: ShieldCheck },
+          { href: "/admin/skills", label: "Skills Management", icon: ShieldCheck },
           { href: "/admin/users-management", label: "Users Management", icon: Users },
         ];
       default:

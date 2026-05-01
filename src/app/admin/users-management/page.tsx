@@ -1,6 +1,8 @@
 // app/(admin)/admin/users-management/page.tsx
 "use client";
 
+"use client";
+
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
@@ -20,7 +22,7 @@ interface User {
   createdAt: string;
 }
 
-// Animation variants with correct typing
+// Animation variants
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
@@ -132,7 +134,7 @@ export default function UsersManagementPage() {
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
-          className="h-8 w-8 border-4 border-emerald-500 border-t-transparent rounded-full"
+          className="h-8 w-8 border-4 border-emerald-500 border-t-[#0000] rounded-full"
         />
       </div>
     );
@@ -152,7 +154,6 @@ export default function UsersManagementPage() {
         </p>
       </motion.div>
 
-      {/* Stats */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
         {[
           { icon: Users, label: "Total Users", color: "text-sky-500", value: users.length },
@@ -176,7 +177,6 @@ export default function UsersManagementPage() {
         ))}
       </div>
 
-      {/* Users Table */}
       <motion.div
         variants={tableVariants}
         className="bg-white rounded-xl shadow-sm overflow-hidden"
@@ -185,21 +185,11 @@ export default function UsersManagementPage() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Name
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Email
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Role
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Joined
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Actions
-                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
@@ -214,12 +204,8 @@ export default function UsersManagementPage() {
                     whileHover={{ backgroundColor: "rgba(243, 244, 246, 0.6)" }}
                     transition={{ duration: 0.2 }}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">
-                      {user.name}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                      {user.email}
-                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{user.name}</td>
+                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.email}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
@@ -279,7 +265,7 @@ export default function UsersManagementPage() {
         )}
       </motion.div>
 
-      {/* Role Change Modal – faster animation, black Cancel button */}
+      {/* Role Change Modal */}
       <AnimatePresence>
         {roleModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -290,19 +276,14 @@ export default function UsersManagementPage() {
               transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
               className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4 shadow-xl"
             >
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                Change User Role
-              </h3>
-              <p className="text-sm text-gray-500 mb-4">
-                Select a new role for this user.
-              </p>
+              <h3 className="text-lg font-semibold text-gray-900 mb-4">Change User Role</h3>
+              <p className="text-sm text-gray-500 mb-4">Select a new role for this user.</p>
               <div className="space-y-2">
                 {["skill_member", "skill_verifier", "admin"].map((role) => (
                   <motion.button
                     key={role}
                     whileHover={{ x: 4 }}
                     onClick={() => {
-                      // Show confirmation before changing
                       setConfirmRole({
                         userId: roleModal.userId,
                         newRole: role,
@@ -352,9 +333,7 @@ export default function UsersManagementPage() {
               >
                 <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
               </motion.div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                Confirm Role Change
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900">Confirm Role Change</h3>
               <p className="text-sm text-gray-500 mt-2 mb-6">
                 Are you sure you want to change this user’s role to{" "}
                 <strong className="text-gray-700">
@@ -388,7 +367,7 @@ export default function UsersManagementPage() {
         )}
       </AnimatePresence>
 
-      {/* Delete Confirmation Modal – faster animations */}
+      {/* Delete Confirmation Modal */}
       <AnimatePresence>
         {deleteUserId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -406,12 +385,9 @@ export default function UsersManagementPage() {
               >
                 <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               </motion.div>
-              <h3 className="text-lg font-semibold text-gray-900">
-                Confirm Deletion
-              </h3>
+              <h3 className="text-lg font-semibold text-gray-900">Confirm Deletion</h3>
               <p className="text-sm text-gray-500 mt-2 mb-6">
-                This action is irreversible. Are you sure you want to delete
-                this user?
+                This action is irreversible. Are you sure you want to delete this user?
               </p>
               <div className="flex gap-3">
                 <motion.button

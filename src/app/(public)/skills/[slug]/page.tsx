@@ -1,0 +1,109 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import { motion, Variants } from "framer-motion";
+
+const API = process.env.NEXT_PUBLIC_API_URL;
+
+interface Skill {
+  _id: string;
+  skillName: string;
+  skillCategory: string;
+  description: string;
+  providerName: string;
+  verificationStatus: string;
+  videoUrl: string;
+  slug: string;
+  createdAt: string;
+}
+
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: { opacity: 1, transition: { staggerChildren: 0.2 } },
+};
+
+const itemVariants: Variants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 200 } },
+};
+
+export default function SkillDetailPage() {
+  const { slug } = useParams();
+  const [skill, setSkill] = useState<Skill | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!slug) return;
+    fetchSkill();
+  }, [slug]);
+
+  const fetchSkill = async () => {
+    try {
+      const res = await fetch(`${API}/skills/slug/${slug}`);
+      if (!res.ok) throw new Error("Not found");
+      const data = await res.json();
+      setSkill(data.skill);
+    } catch {
+      setSkill(null);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <motion.div
+          animate={{ rotate: 360 }}
+          transition={{ repeat: Infinity, duration: 1, ease: "linear" }}
+          className="h-8 w-8 border-4 border-emerald-500 border-t-[#0000] rounded-full"
+        />
+      </div>
+    );
+  }
+
+  if (!skill) {
+    return (
+      <div className="flex justify-center items-center h-screen text-gray-500">
+        Skill not found.
+      </div>
+    );
+  }
+
+  return (
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="max-w-4xl mx-auto py-16 px-4"
+    >
+      <motion.div variants={itemVariants} className="flex items-center gap-3 mb-4">
+        <h1 className="text-4xl font-bold text-gray-900">{skill.skillName}</h1>
+        <span className="px-3 py-1 rounded-full text-sm font-medium bg-emerald-100 text-emerald-800">
+          Verified
+        </span>
+      </motion.div>
+
+      <motion.p variants={itemVariants} className="text-lg text-gray-600 mb-1">
+        {skill.skillCategory}
+      </motion.p>
+      <motion.p variants={itemVariants} className="text-gray-500 mb-8">
+        by {skill.providerName}
+      </motion.p>
+
+      {skill.videoUrl && (
+        <motion.div variants={itemVariants} className="mb-8 rounded-xl overflow-hidden shadow-lg">
+          <video controls width="100%" className="aspect-video bg-black">
+            <source src={skill.videoUrl} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </motion.div>
+      )}
+
+      <motion.div variants={itemVariants} className="prose max-w-none text-gray-800 text-lg leading-relaxed">
+        <p>{skill.description}</p>
+      </motion.div>
+    </motion.div>
+  );
+}
