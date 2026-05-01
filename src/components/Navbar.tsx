@@ -97,34 +97,36 @@ const Navbar = () => {
 
   const user = session?.user;
 
-  // ড্রপডাউনের আইটেমসমূহ (role অনুযায়ী)
   const getDropdownItems = () => {
-    const common = [
-      { href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
-    ];
-
     if (!user) return [];
+
+    // Role‑based dashboard route
+    const dashboardRoute = user.role
+      ? `/${user.role}/dashboard`
+      : "/dashboard";
 
     switch (user.role) {
       case "skill_member":
         return [
+          { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
           { href: "/add-skills", label: "Add Skills", icon: PlusCircle },
           { href: "/exchange-request", label: "Exchange Requests", icon: ArrowRightLeft },
-          ...common,
         ];
       case "skill_verifier":
         return [
+          { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
           { href: "/pending-skills", label: "Pending Skills", icon: ShieldCheck },
-          ...common,
         ];
       case "admin":
         return [
-          { href: "/pending-skills", label: "Pending Skills", icon: ShieldCheck },
-          { href: "/users-management", label: "Users Management", icon: Users },
-          ...common,
+          { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
+          { href: "/admin/pending-skills", label: "Pending Skills", icon: ShieldCheck },
+          { href: "/admin/users-management", label: "Users Management", icon: Users },
         ];
       default:
-        return common;
+        return [
+          { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
+        ];
     }
   };
 
