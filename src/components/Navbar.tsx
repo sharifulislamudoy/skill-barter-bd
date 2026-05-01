@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, Transition } from "@headlessui/react";
 import {
-  User,
   LogOut,
   ChevronDown,
   LayoutDashboard,
@@ -16,10 +15,11 @@ import {
   ArrowRightLeft,
   Users,
   ShieldCheck,
+  List,
 } from "lucide-react";
 import toast from "react-hot-toast";
 
-// মডাল কম্পোনেন্ট
+// Logout Modal Component
 const LogoutModal = ({
   isOpen,
   onClose,
@@ -110,7 +110,9 @@ const Navbar = () => {
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
           { href: `/${user.role}/add-skills`, label: "Add Skills", icon: PlusCircle },
-          { href: `/${user.role}/connections`, label: "Exchange Requests", icon: ArrowRightLeft },
+          { href: `/${user.role}/my-skills`, label: "My Skills", icon: List },
+          { href: `/${user.role}/exchange-requests`, label: "Exchange Requests", icon: ArrowRightLeft },
+          { href: `/${user.role}/my-connections`, label: "My Connections", icon: Users },
         ];
       case "skill_verifier":
         return [
@@ -130,14 +132,15 @@ const Navbar = () => {
     }
   };
 
-  // অপ্রমাণীকৃত ব্যবহারকারীর জন্যও Skills ও Users লিঙ্ক
+  // Public links for both desktop and mobile bottom nav
   const publicLinks = [
-    { href: "/skills", label: "Skills" },
-    { href: "/users", label: "Users" },
+    { href: "/skills", label: "Skills", icon: ShieldCheck },
+    { href: "/users", label: "Users", icon: Users },
   ];
 
   return (
     <>
+      {/* Main Navigation Bar */}
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -150,7 +153,7 @@ const Navbar = () => {
       >
         <div className="mx-auto max-w-7xl px-6 py-3 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Left: Logo */}
+            {/* Logo */}
             <motion.div whileHover={{ scale: 1.02 }}>
               <Link href="/" className="flex items-center gap-2.5 group">
                 <div className="relative h-8 w-8 overflow-hidden rounded-full bg-gradient-to-br from-sky-500 to-emerald-400 p-0.5 shadow-md">
@@ -170,7 +173,7 @@ const Navbar = () => {
               </Link>
             </motion.div>
 
-            {/* Middle: Skills & Users (সবার জন্য) */}
+            {/* Middle: Skills & Users - Desktop only */}
             <div className="hidden sm:flex items-center gap-8">
               {publicLinks.map((link) => (
                 <Link
@@ -197,7 +200,7 @@ const Navbar = () => {
               ) : (
                 <Menu as="div" className="relative">
                   <Menu.Button className="flex items-center gap-2 focus:outline-none">
-                    {/* প্রোফাইল সার্কেল (প্রথম অক্ষর) */}
+                    {/* Profile circle */}
                     <div className="h-9 w-9 rounded-full bg-gradient-to-br from-emerald-400 to-sky-500 flex items-center justify-center text-white font-bold shadow-md cursor-pointer hover:shadow-lg transition-shadow">
                       {user.name?.charAt(0).toUpperCase() || "U"}
                     </div>
@@ -213,13 +216,10 @@ const Navbar = () => {
                     leaveTo="opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 mt-3 w-56 origin-top-right divide-y divide-gray-100 rounded-2xl bg-white/90 backdrop-blur-lg shadow-xl shadow-sky-100/50 border border-white/50 focus:outline-none p-2">
-                      {/* User info */}
                       <div className="px-4 py-3 text-sm">
                         <p className="font-medium text-gray-900 truncate">{user.name}</p>
                         <p className="text-gray-500 truncate text-xs">{user.email}</p>
                       </div>
-
-                      {/* ডায়নামিক লিঙ্ক */}
                       <div className="py-1">
                         {getDropdownItems().map((item) => (
                           <Menu.Item key={item.href}>
@@ -237,8 +237,6 @@ const Navbar = () => {
                           </Menu.Item>
                         ))}
                       </div>
-
-                      {/* Logout বাটন */}
                       <div className="py-1">
                         <Menu.Item>
                           {({ active }) => (
@@ -262,6 +260,22 @@ const Navbar = () => {
           </div>
         </div>
       </motion.nav>
+
+      {/* Mobile Bottom Navigation Bar (only Skills & Users) */}
+      <div className="fixed bottom-0 left-0 right-0 sm:hidden bg-white/90 backdrop-blur-lg border-t border-gray-200 shadow-lg z-30">
+        <div className="flex justify-around items-center py-2">
+          {publicLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="flex flex-col items-center gap-1 px-4 py-1 text-gray-600 hover:text-emerald-600 transition-colors"
+            >
+              <link.icon className="h-5 w-5" />
+              <span className="text-xs font-medium">{link.label}</span>
+            </Link>
+          ))}
+        </div>
+      </div>
 
       {/* Logout confirmation modal */}
       <LogoutModal
