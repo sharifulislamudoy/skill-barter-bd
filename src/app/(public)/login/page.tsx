@@ -1,7 +1,6 @@
-// app/login/page.tsx
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
@@ -23,9 +22,11 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const hasShownToast = useRef(false);  // 👈 prevent double toast
 
   useEffect(() => {
-    if (searchParams.get("registered") === "true") {
+    if (searchParams.get("registered") === "true" && !hasShownToast.current) {
+      hasShownToast.current = true;
       toast.success("Registration successful! Please log in.", {
         icon: "🎉",
         duration: 4000,

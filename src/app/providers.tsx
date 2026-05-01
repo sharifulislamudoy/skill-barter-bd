@@ -7,7 +7,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
       <Toaster
-        position="top-center"
+        position="top-right"
         reverseOrder={false}
         gutter={8}
         toastOptions={{
