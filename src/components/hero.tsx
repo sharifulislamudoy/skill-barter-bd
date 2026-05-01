@@ -136,7 +136,7 @@ export default function Hero() {
         </motion.div>
 
         {/* Right column: floating cards */}
-        <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:ml-10">
+        <div className="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:ml-10 hidden lg:block">
           <div className="relative h-[400px] w-[400px] flex items-center justify-center">
             {/* Center swap icon */}
             <motion.div
