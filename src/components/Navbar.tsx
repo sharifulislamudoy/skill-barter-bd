@@ -110,7 +110,7 @@ const Navbar = () => {
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
           { href: `/${user.role}/add-skills`, label: "Add Skills", icon: PlusCircle },
-          { href: `/${user.role}/exchange-request`, label: "Exchange Requests", icon: ArrowRightLeft },
+          { href: `/${user.role}/connections`, label: "Exchange Requests", icon: ArrowRightLeft },
         ];
       case "skill_verifier":
         return [
