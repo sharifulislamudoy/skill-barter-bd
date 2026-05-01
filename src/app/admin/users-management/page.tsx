@@ -65,6 +65,10 @@ export default function UsersManagementPage() {
     userId: string;
     currentRole: string;
   } | null>(null);
+  const [confirmRole, setConfirmRole] = useState<{
+    userId: string;
+    newRole: string;
+  } | null>(null);
 
   useEffect(() => {
     fetchUsers();
@@ -102,7 +106,6 @@ export default function UsersManagementPage() {
     } catch {
       toast.error("Update failed");
     }
-    setRoleModal(null);
   };
 
   const handleDelete = async () => {
@@ -276,7 +279,7 @@ export default function UsersManagementPage() {
         )}
       </motion.div>
 
-      {/* Role Change Modal */}
+      {/* Role Change Modal – faster animation, black Cancel button */}
       <AnimatePresence>
         {roleModal && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -284,7 +287,7 @@ export default function UsersManagementPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 20 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
               className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4 shadow-xl"
             >
               <h3 className="text-lg font-semibold text-gray-900 mb-4">
@@ -298,7 +301,14 @@ export default function UsersManagementPage() {
                   <motion.button
                     key={role}
                     whileHover={{ x: 4 }}
-                    onClick={() => handleRoleChange(roleModal.userId, role)}
+                    onClick={() => {
+                      // Show confirmation before changing
+                      setConfirmRole({
+                        userId: roleModal.userId,
+                        newRole: role,
+                      });
+                      setRoleModal(null);
+                    }}
                     className={`w-full text-left px-4 py-2 rounded-lg transition-colors ${
                       roleModal.currentRole === role
                         ? "bg-emerald-100 text-emerald-700 font-medium"
@@ -312,9 +322,10 @@ export default function UsersManagementPage() {
                 ))}
               </div>
               <motion.button
-                whileHover={{ backgroundColor: "#f3f4f6" }}
+                whileHover={{ scale: 1.01 }}
+                whileTap={{ scale: 0.98 }}
                 onClick={() => setRoleModal(null)}
-                className="mt-4 w-full py-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                className="mt-4 w-full py-2 text-sm font-medium text-white bg-gray-800 hover:bg-gray-900 rounded-lg transition-colors"
               >
                 Cancel
               </motion.button>
@@ -323,7 +334,61 @@ export default function UsersManagementPage() {
         )}
       </AnimatePresence>
 
-      {/* Delete Confirmation Modal */}
+      {/* Role Change Confirmation Modal */}
+      <AnimatePresence>
+        {confirmRole && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
+              className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4 shadow-xl text-center"
+            >
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.05, type: "spring", stiffness: 400, damping: 25 }}
+              >
+                <AlertTriangle className="h-12 w-12 text-amber-500 mx-auto mb-4" />
+              </motion.div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Confirm Role Change
+              </h3>
+              <p className="text-sm text-gray-500 mt-2 mb-6">
+                Are you sure you want to change this user’s role to{" "}
+                <strong className="text-gray-700">
+                  {confirmRole.newRole.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
+                </strong>
+                ?
+              </p>
+              <div className="flex gap-3">
+                <motion.button
+                  whileHover={{ backgroundColor: "#f9fafb" }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setConfirmRole(null)}
+                  className="flex-1 py-2 text-gray-600 text-sm border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
+                >
+                  Cancel
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02, backgroundColor: "#059669" }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => {
+                    handleRoleChange(confirmRole.userId, confirmRole.newRole);
+                    setConfirmRole(null);
+                  }}
+                  className="flex-1 py-2 text-sm bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors"
+                >
+                  Change Role
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Delete Confirmation Modal – faster animations */}
       <AnimatePresence>
         {deleteUserId && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
@@ -331,13 +396,13 @@ export default function UsersManagementPage() {
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
-              transition={{ type: "spring", damping: 20 }}
+              transition={{ type: "spring", stiffness: 500, damping: 30, mass: 0.8 }}
               className="bg-white rounded-2xl p-6 w-full max-w-sm mx-4 shadow-xl text-center"
             >
               <motion.div
                 initial={{ scale: 0 }}
                 animate={{ scale: 1 }}
-                transition={{ delay: 0.1, type: "spring" }}
+                transition={{ delay: 0.05, type: "spring", stiffness: 400, damping: 25 }}
               >
                 <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
               </motion.div>
