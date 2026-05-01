@@ -1,3 +1,4 @@
+// app/skills/page.tsx
 "use client";
 
 import { useEffect, useState } from "react";
@@ -16,6 +17,8 @@ interface Skill {
   slug: string;
   verificationStatus: string;
   videoUrl?: string;
+  averageRating: number;
+  totalRatings: number;
 }
 
 const containerVariants: Variants = {
@@ -34,6 +37,21 @@ const cardVariants: Variants = {
   exit: { scale: 0.8, opacity: 0 },
 };
 
+function StarDisplay({ rating }: { rating: number }) {
+  return (
+    <div className="flex gap-0.5 text-sm">
+      {[1, 2, 3, 4, 5].map((star) => (
+        <span
+          key={star}
+          className={star <= Math.round(rating) ? "text-yellow-400" : "text-gray-300"}
+        >
+          ★
+        </span>
+      ))}
+    </div>
+  );
+}
+
 export default function SkillsPage() {
   const [skills, setSkills] = useState<Skill[]>([]);
   const [search, setSearch] = useState("");
@@ -51,7 +69,7 @@ export default function SkillsPage() {
         : `${API}/skills`;
       const res = await fetch(url);
       const data = await res.json();
-      setSkills(data.skills);
+      setSkills(data.skills || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -83,7 +101,7 @@ export default function SkillsPage() {
           placeholder="Search by name or category..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+          className="w-full text-gray-700 pl-10 pr-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
         />
         <Search className="absolute left-3 top-2.5 h-5 w-5 text-gray-400" />
       </motion.div>
@@ -97,10 +115,7 @@ export default function SkillsPage() {
           />
         </div>
       ) : skills.length === 0 ? (
-        <motion.p
-          variants={headerVariants}
-          className="text-center py-12 text-gray-500"
-        >
+        <motion.p variants={headerVariants} className="text-center py-12 text-gray-500">
           No skills found.
         </motion.p>
       ) : (
@@ -123,6 +138,18 @@ export default function SkillsPage() {
                   </span>
                 </div>
                 <p className="text-sm text-gray-500 mb-1">{skill.skillCategory}</p>
+
+                {/* Rating display on card */}
+                <div className="flex items-center gap-2 mb-2">
+                  <StarDisplay rating={skill.averageRating || 0} />
+                  <span className="text-sm font-medium text-gray-700">
+                    {skill.averageRating ? skill.averageRating.toFixed(1) : "0.0"}
+                  </span>
+                  <span className="text-xs text-gray-400">
+                    ({skill.totalRatings || 0})
+                  </span>
+                </div>
+
                 <p className="text-gray-700 mb-3 line-clamp-2">{truncateDescription(skill.description)}</p>
                 <p className="text-sm text-gray-500">by {skill.providerName}</p>
                 <Link
