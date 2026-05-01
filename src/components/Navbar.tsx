@@ -109,19 +109,19 @@ const Navbar = () => {
       case "skill_member":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: "/add-skills", label: "Add Skills", icon: PlusCircle },
-          { href: "/exchange-request", label: "Exchange Requests", icon: ArrowRightLeft },
+          { href: `/${user.role}/add-skills`, label: "Add Skills", icon: PlusCircle },
+          { href: `/${user.role}/exchange-request`, label: "Exchange Requests", icon: ArrowRightLeft },
         ];
       case "skill_verifier":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: "skill_verifier/skills", label: "Pending Skills", icon: ShieldCheck },
+          { href: `/${user.role}/skills`, label: "Pending Skills", icon: ShieldCheck },
         ];
       case "admin":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: "/admin/skills", label: "Skills Management", icon: ShieldCheck },
-          { href: "/admin/users-management", label: "Users Management", icon: Users },
+          { href: `/${user.role}/skills`, label: "Skills Management", icon: ShieldCheck },
+          { href: `/${user.role}/users-management`, label: "Users Management", icon: Users },
         ];
       default:
         return [

@@ -110,7 +110,7 @@ export default function AddSkillPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1">Skill Name</label>
           <input
             type="text"
-            className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+            className="w-full rounded-lg text-gray-700 border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
             value={form.skillName}
             onChange={(e) => setForm({ ...form, skillName: e.target.value })}
           />
@@ -119,7 +119,7 @@ export default function AddSkillPage() {
         <motion.div variants={formItemVariants}>
           <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
           <select
-            className="w-full rounded-lg border border-gray-200 px-4 py-2 bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+            className="w-full rounded-lg text-gray-700 border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
             value={form.skillCategory}
             onChange={(e) => setForm({ ...form, skillCategory: e.target.value })}
           >
@@ -134,8 +134,9 @@ export default function AddSkillPage() {
           <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
           <textarea
             rows={4}
-            className="w-full rounded-lg border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+            className="w-full rounded-lg text-gray-700 border border-gray-200 px-4 py-2 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
             value={form.description}
+            placeholder="Describe your skills in details...."
             onChange={(e) => setForm({ ...form, description: e.target.value })}
           />
         </motion.div>
