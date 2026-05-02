@@ -122,8 +122,6 @@ const Navbar = () => {
       case "admin":
         return [
           { href: dashboardRoute, label: "Dashboard", icon: LayoutDashboard },
-          { href: `/${user.role}/skills`, label: "Skills Management", icon: ShieldCheck },
-          { href: `/${user.role}/users-management`, label: "Users Management", icon: Users },
         ];
       default:
         return [

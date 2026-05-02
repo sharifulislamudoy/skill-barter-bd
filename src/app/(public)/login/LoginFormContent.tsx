@@ -132,15 +132,6 @@ export default function LoginFormContent() {
             </motion.button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-500">
-            <Link
-              href="/forgot-password"
-              className="text-emerald-600 hover:underline"
-              onClick={(e) => e.preventDefault()}
-            >
-              Forgot password?
-            </Link>
-          </div>
 
           <p className="mt-6 text-center text-sm text-gray-600">
             Don’t have an account?{" "}
