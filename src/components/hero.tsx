@@ -81,8 +81,27 @@ export default function Hero() {
             variants={itemVariants}
             className="mt-10 text-5xl font-bold tracking-tight text-gray-900 sm:text-7xl"
           >
-            <span className="text-black">Skill</span>{" "}
-            <span className="text-emerald-400">Barter</span>
+            <span className=" font-bold tracking-tight text-gray-800">
+              Talent
+              <span className="relative inline-block text-gray-800 ml-0.5">
+                o
+                {/* Green curved dash above the 'o' */}
+                <svg
+                  className="absolute top-1 left-1/2 -translate-x-1/2 w-4 h-2"
+                  viewBox="0 0 20 8"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M2,6 Q10,0 18,6"
+                    stroke="#10b981"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                    fill="none"
+                  />
+                </svg>
+              </span>
+            </span>
           </motion.h1>
 
           <motion.p

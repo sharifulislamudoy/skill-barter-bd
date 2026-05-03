@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { motion, Variants } from "framer-motion";
 import {
   Users,
@@ -51,6 +51,8 @@ const linkVariants: Variants = {
 export default function AdminSidebar() {
   const pathname = usePathname();
 
+  const router = useRouter();
+
   return (
     <motion.aside
       variants={sidebarVariants}
@@ -65,7 +67,11 @@ export default function AdminSidebar() {
           transition={{ delay: 0.2, type: "spring", stiffness: 300 }}
           className="text-xl font-bold text-gray-900"
         >
-          Admin Panel
+          <button
+            onClick={() => router.push('/')}
+            className="cursor-pointer"
+          >Admin Panel
+          </button>
         </motion.span>
       </div>
 
@@ -84,11 +90,10 @@ export default function AdminSidebar() {
             >
               <Link
                 href={link.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  isActive
+                className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${isActive
                     ? "bg-emerald-50 text-emerald-700"
                     : "text-gray-600 hover:bg-gray-100 hover:text-gray-900"
-                }`}
+                  }`}
               >
                 <Icon className="h-5 w-5" />
                 {link.label}

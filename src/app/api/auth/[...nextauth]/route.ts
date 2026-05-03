@@ -29,12 +29,12 @@ export const authOptions: AuthOptions = {
           throw new Error(data.message || "Invalid credentials");
         }
 
-        // Return object matches the extended User type
         return {
           id: data.user._id,
           name: data.user.name,
           email: data.user.email,
           role: data.user.role,
+          image: data.user.avatarUrl || null,
         };
       },
     }),
@@ -44,6 +44,7 @@ export const authOptions: AuthOptions = {
       if (user) {
         token.role = user.role;
         token.id = user.id;
+        token.picture = user.image;
       }
       return token;
     },
@@ -51,6 +52,7 @@ export const authOptions: AuthOptions = {
       if (session.user) {
         session.user.role = token.role as string;
         session.user.id = token.id as string;
+        session.user.image = token.picture as string | null;
       }
       return session;
     },
@@ -66,3 +68,4 @@ export const authOptions: AuthOptions = {
 
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
+

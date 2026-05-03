@@ -14,8 +14,11 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Skill Barter - Exchange Skills Without Money",
+  title: "Talento",
   description: "Learn. Share. Grow. Exchange skills through trusted barter.",
+  icons: {
+    icon: [{ url: "/logo.png" }],
+  },
 };
 
 export default function RootLayout({
